@@ -1,0 +1,316 @@
+@import "tailwindcss";
+
+/* ============================================================
+   SHIVAM SHETH — VOXEL ARCADE
+   Dark-only by design: this is a CRT arcade cabinet, not a doc.
+   ============================================================ */
+
+@theme {
+  /* --- Surfaces: deep midnight, cool-shifted --- */
+  --color-void: #05060f;
+  --color-abyss: #090b1a;
+  --color-panel: #0f1226;
+  --color-panel2: #151935;
+  --color-edge: #262c52;
+  --color-edgehot: #3a4478;
+
+  /* --- Ink --- */
+  --color-ink: #e8ecff;
+  --color-inksoft: #a8b0d8;
+  --color-inkmute: #6b74a3;
+
+  /* --- Arcade accents --- */
+  --color-cyan: #35f2d4;
+  --color-cyandeep: #12b39c;
+  --color-magenta: #ff3d8b;
+  --color-violet: #8b6bff;
+  --color-amber: #ffc53d;
+  --color-lime: #9dff4d;
+
+  --font-display: var(--font-press-start), ui-monospace, monospace;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+}
+
+:root {
+  color-scheme: dark;
+  --scan-opacity: 0.05;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-void);
+}
+
+body {
+  margin: 0;
+  background: var(--color-void);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* ---------- Pixel-perfect rendering for the WebGL canvas ----------
+   The scene renders at a fraction of device resolution, then the browser
+   upscales it. Nearest-neighbour upscaling is what makes the voxels chunky. */
+.pixel-canvas canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* ---------- CRT scanline + vignette overlay ---------- */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.55) 0px,
+    rgba(0, 0, 0, 0.55) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: var(--scan-opacity);
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    transparent 45%,
+    rgba(5, 6, 15, 0.6) 100%
+  );
+}
+
+/* ---------- Typography ---------- */
+.font-display {
+  font-family: var(--font-display);
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+
+/* Press Start 2P renders large for its em; scale down deliberately. */
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 6vw, 3.85rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.8vw, 1.85rem);
+  line-height: 1.4;
+}
+
+.label {
+  font-family: var(--font-display);
+  font-size: clamp(0.5rem, 1.3vw, 0.62rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ---------- Glow utilities ---------- */
+.glow-cyan {
+  text-shadow:
+    0 0 8px rgba(53, 242, 212, 0.55),
+    0 0 22px rgba(53, 242, 212, 0.25);
+}
+.glow-magenta {
+  text-shadow:
+    0 0 8px rgba(255, 61, 139, 0.55),
+    0 0 22px rgba(255, 61, 139, 0.25);
+}
+.glow-amber {
+  text-shadow:
+    0 0 8px rgba(255, 197, 61, 0.5),
+    0 0 22px rgba(255, 197, 61, 0.22);
+}
+
+/* ---------- Pixel-corner panel (notched corners, never rounded) ---------- */
+.pixel-panel {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(21, 25, 53, 0.92),
+    rgba(15, 18, 38, 0.92)
+  );
+  border: 1px solid var(--color-edge);
+  clip-path: polygon(
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px),
+    0 8px
+  );
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.pixel-panel:hover {
+  border-color: var(--color-edgehot);
+}
+
+.pixel-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.95rem 1.25rem;
+  border: 1px solid currentColor;
+  clip-path: polygon(
+    6px 0,
+    calc(100% - 6px) 0,
+    100% 6px,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    6px 100%,
+    0 calc(100% - 6px),
+    0 6px
+  );
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.pixel-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 0 currentColor;
+}
+
+.pixel-btn:active {
+  transform: translate(0, 0);
+  box-shadow: 0 0 0 0 currentColor;
+}
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Active role: pulsing status dot + lit panel ---------- */
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 0.9;
+  }
+  70% {
+    box-shadow: 0 0 0 7px transparent;
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+    opacity: 0.9;
+  }
+}
+.pulse-dot {
+  animation: pulse-ring 1.9s cubic-bezier(0.66, 0, 0, 1) infinite;
+}
+
+/* Active-role panels sit brighter than the rest of the page. */
+.panel-live {
+  background: linear-gradient(
+    180deg,
+    rgba(30, 36, 74, 0.95),
+    rgba(17, 21, 45, 0.95)
+  );
+}
+
+/* ---------- Blinking arcade cursor ---------- */
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.blink {
+  animation: blink 1.05s steps(1) infinite;
+}
+
+/* ---------- Marquee ---------- */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 34s linear infinite;
+}
+
+/* ---------- Focus ring ---------- */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-abyss);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-edge);
+  border: 2px solid var(--color-abyss);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-edgehot);
+}
+
+/* ---------- Reduced motion: kill all ambient animation ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .marquee-track {
+    animation: none;
+  }
+}
