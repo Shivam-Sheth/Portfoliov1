@@ -9,6 +9,7 @@ export const PROFILE = {
   role: "Agentic AI / AI Infrastructure",
   tagline:
     "M.S. Computer Science at Northwestern. I build agentic AI systems and the infrastructure they run on - voice agents, payment rails, NLP screening pipelines, and the systems behind them.",
+  motto: "I do creative things logically and logical things creatively.",
   email: "shivamsheth2027@u.northwestern.edu",
   phone: "+1 (773) 541-1355",
   linkedin: "https://linkedin.com/in/shivamsheth",
@@ -171,22 +172,22 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
-    name: "AiDHD - AI Group-Planning Concierge",
+    name: "Pact - Concierge for group nights & trips",
     status: "NEW",
     stack: "Next.js - Gemini - ElevenLabs - Webhooks - Supabase - Vercel",
     summary:
-      "A live end-to-end trip and nightlife planner that runs the whole loop: search, cards, pay, confirm.",
+      "Group buys and group nights in one live window: invite friends, hit the spend threshold together, and check out before the clock hits zero.",
     bullets: [
       "Preferences arrive via WhatsApp and iMessage webhooks; planning runs on Gemini with a live ElevenLabs voice agent painting result cards as tools return.",
-      "Wired real inventory from Duffel and Ticketmaster with secure Prava checkout - no card numbers ever reach the LLM - behind a Supabase AES-GCM PII vault.",
-      "Added a reel-to-plan path that OCR-decodes an Instagram reel into a fully costed itinerary.",
+      "Wired real inventory from Duffel, Ticketmaster, and Shopify with secure Prava checkout - no card numbers ever reach the LLM - behind a Supabase AES-GCM PII vault.",
+      "Added a reel-to-plan path that OCR-decodes an Instagram reel into a fully costed itinerary, plus timed group-buy windows that unlock shared discounts.",
     ],
     links: [
-      { label: "Live agent", href: "https://aidhd-omega.vercel.app/agent" },
+      { label: "Live site", href: "https://getpact.vercel.app/" },
     ],
     accent: "#ff3d8b",
-    image: "/assets/preview-aidhd.png",
-    demo: "https://aidhd-omega.vercel.app/agent",
+    image: "/assets/preview-pact.png",
+    demo: "https://getpact.vercel.app/",
     featured: true,
   },
   {

@@ -152,6 +152,10 @@ export default function Portfolio() {
               {PROFILE.tagline}
             </p>
 
+            <p className="mt-4 max-w-lg text-sm italic leading-relaxed text-magenta/90 md:text-base">
+              {PROFILE.motto}
+            </p>
+
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <span className="flex items-center gap-2 border border-cyan/40 bg-cyan/5 px-3 py-1.5 text-[11px] text-cyan">
                 <span className="h-2 w-2 bg-cyan" />
