@@ -60,8 +60,8 @@ export const ACTIVE_ROLES = [
   {
     org: "Northwestern University — FORGE",
     badge: "NF",
-    role: "AI Research Engineer",
-    period: "Jun 2026 - Aug 2026",
+    role: "AI Developer",
+    period: "Jun 2026 - Dec 2026",
     meta: "Network for Collaborative Intelligence - Evanston, IL",
     accent: "magenta" as const,
     live: true,
